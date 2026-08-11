@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Desflix</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <!-- Netflix Theme CSS -->
+    <link rel="stylesheet" href="~/css/netflix-theme.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/animations.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <!-- Navegación con tema Netflix -->
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container-fluid">
+                <!-- Logo/Marca -->
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">
+                    <span style="font-size: 1.5em;">🎬</span> DESFLIX
+                </a>
+
+                <!-- Botón toggle para mobile -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+                        data-bs-target="#navbarNav" aria-controls="navbarNav" 
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Menú de navegación -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Home" asp-action="Index">Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Pelicula" asp-action="Index">Películas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Pelicula" asp-action="Create">
+                                <span style="color: #E50914;">+</span> Agregar Película
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Home" asp-action="Privacy">Privacidad</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Contenido principal -->
+    <main role="main" class="pb-5">
+        <div class="container-fluid">
+            @RenderBody()
+        </div>
+    </main>
+
+    <!-- Footer con tema Netflix -->
+    <footer class="mt-5">
+        <div class="container-fluid">
+            <div class="row py-4">
+                <div class="col-md-6">
+                    <h5 class="text-danger">🎬 DESFLIX</h5>
+                    <p class="text-secondary">La plataforma de streaming de películas más innovadora.</p>
+                </div>
+                <div class="col-md-3">
+                    <h6 class="text-danger">Enlaces</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-decoration-none text-secondary">Acerca de</a></li>
+                        <li><a asp-controller="Home" asp-action="Privacy" class="text-decoration-none text-secondary">Privacidad</a></li>
+                        <li><a href="#" class="text-decoration-none text-secondary">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h6 class="text-danger">Redes Sociales</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-decoration-none text-secondary">Twitter</a></li>
+                        <li><a href="#" class="text-decoration-none text-secondary">Facebook</a></li>
+                        <li><a href="#" class="text-decoration-none text-secondary">Instagram</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="bg-secondary">
+            <div class="text-center text-secondary py-3">
+                <p>&copy; 2026 - Desflix. Todos los derechos reservados. Desarrollado con ❤️ y patrones de diseño profesionales.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/netflix-ui.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

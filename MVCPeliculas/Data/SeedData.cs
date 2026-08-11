@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using MVCPeliculas.Models;
+using MVCPeliculas.Core.Entities;
 
 namespace MVCPeliculas.Data
 {

@@ -1,6 +1,6 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
-using MVCPeliculas.Models;
+using MVCPeliculas.Core.Entities;
 
 namespace MVCPeliculas.Data
 {
@@ -11,7 +11,7 @@ namespace MVCPeliculas.Data
         }
 
         public DbSet<Pelicula> Peliculas { get; set; }
-        public DbSet<Genero> Generos { get; set; } // Nuevo modelo
+        public DbSet<Genero> Generos { get; set; }
 
     }
 }

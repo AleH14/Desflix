@@ -22,7 +22,7 @@ namespace MVCPeliculas.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("MVCPeliculas.Models.Genero", b =>
+            modelBuilder.Entity("MVCPeliculas.Models.Pelicula", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -30,58 +30,24 @@ namespace MVCPeliculas.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Nombre")
+                    b.Property<DateTime>("FechaLanzamiento")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Genero")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Precio")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Titulo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Generos");
-                });
-
-            modelBuilder.Entity("MVCPeliculas.Models.Pelicula", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Director")
-                        .IsRequired()
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
-
-                    b.Property<DateTime>("FechaLanzamiento")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("GeneroId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Precio")
-                        .HasColumnType("money");
-
-                    b.Property<string>("Titulo")
-                        .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GeneroId");
-
-                    b.ToTable("Peliculas");
-                });
-
-            modelBuilder.Entity("MVCPeliculas.Models.Pelicula", b =>
-                {
-                    b.HasOne("MVCPeliculas.Models.Genero", "Genero")
-                        .WithMany()
-                        .HasForeignKey("GeneroId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Genero");
+                    b.ToTable("Peliculas", (string)null);
                 });
 #pragma warning restore 612, 618
         }

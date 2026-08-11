@@ -1,67 +1,189 @@
-@model IEnumerable<MVCPeliculas.Models.Pelicula>
+@model IEnumerable<MVCPeliculas.DTOs.Response.PeliculaResponseDto>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Catálogo de Películas - Desflix";
 }
 
-<h1>Index</h1>
+<!-- Hero Section -->
+<div class="hero-section slide-in-down">
+    <div class="container-fluid">
+        <div class="row align-items-center">
+            <div class="col-lg-8 hero-content">
+                <h1 class="hero-title">Catálogo de Películas</h1>
+                <p class="hero-subtitle">Descubre nuestra exclusiva colección de películas para todos los géneros</p>
+            </div>
+            <div class="col-lg-4">
+                <a asp-action="Create" class="btn btn-primary btn-lg w-100">
+                    <i class="fas fa-plus"></i> Agregar Nueva Película
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<form asp-controller="Pelicula" asp-action="Index">
-    <p>
-        Título: <input type="text" name="searchString" value="@ViewData["CurrentFilter"]"></>
-        <input type="submit" value="Buscar" class="btn btn-primary"/>
-    </p>
+<!-- Barra de búsqueda -->
+<div class="container-fluid mt-5">
+    <div class="row mb-4">
+        <div class="col-12">
+            <form asp-action="Index" method="get" class="search-box">
+                <input type="text" name="searchString" class="search-input form-control" 
+                       placeholder="🔍 Busca películas por título, director o género..." 
+                       value="@ViewData["CurrentFilter"]" />
+                <small class="text-muted d-block mt-2">Presiona Enter para buscar o haz clic en el botón de búsqueda</small>
+            </form>
+        </div>
+    </div>
 
-</form>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Titulo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FechaLanzamiento)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Precio)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Director)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Genero)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(model => item.Titulo)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.FechaLanzamiento)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Precio)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Director)
-            </td>
+    <!-- Historial de búsqueda -->
+    @if (!string.IsNullOrEmpty(ViewData["CurrentFilter"]?.ToString()))
+    {
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                    <span>Resultados de búsqueda para: <strong>@ViewData["CurrentFilter"]</strong></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
 
-            <td>
-                @Html.DisplayFor(model => item.Genero.Nombre)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Detalles</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
-            </td>
-        </tr>
+<!-- Listado de películas -->
+<div class="container-fluid movies-container">
+    @if (Model != null && Model.Any())
+    {
+        <h2 class="section-title">Películas Disponibles (@Model.Count())</h2>
+
+        <div class="movies-grid">
+            @{
+                int index = 0;
+            }
+            @foreach (var pelicula in Model)
+            {
+                <div class="movie-card slide-in-up" style="animation-delay: @(index * 0.05)s;">
+                    <!-- Imagen de película -->
+                    <img src="@(pelicula.UrlImagen ?? "https://via.placeholder.com/300x450?text=" + Uri.EscapeDataString(pelicula.Titulo))" 
+                         alt="@pelicula.Titulo" class="movie-image" />
+
+                    <!-- Overlay con botón de acción -->
+                    <div class="movie-overlay">
+                        <a asp-action="Details" asp-route-id="@pelicula.Id" class="overlay-button me-2">
+                            Ver Detalles
+                        </a>
+                    </div>
+
+                    <!-- Información de la película -->
+                    <div class="movie-info">
+                        <h5 class="movie-title" title="@pelicula.Titulo">@pelicula.Titulo</h5>
+
+                        @if (!string.IsNullOrEmpty(pelicula.Genero?.Nombre))
+                        {
+                            <p class="movie-genre">@pelicula.Genero.Nombre</p>
+                        }
+
+                        <p class="movie-rating">
+                            <span class="text-muted">Año:</span> @pelicula.FechaLanzamiento.Year
+                        </p>
+
+                        @if (pelicula.Calificacion.HasValue && pelicula.Calificacion > 0)
+                        {
+                            <p class="movie-rating">
+                                <span class="rating-stars">★★★★★</span>
+                                @pelicula.Calificacion.Value.ToString("0.0")/10
+                            </p>
+                        }
+
+                        <div class="movie-price">${pelicula.Precio.ToString("0.00")}</div>
+
+                        <!-- Acciones -->
+                        <div class="mt-3 d-flex gap-2">
+                            <a asp-action="Edit" asp-route-id="@pelicula.Id" 
+                               class="btn btn-sm btn-secondary flex-grow-1">
+                                Editar
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@pelicula.Id" 
+                               class="btn btn-sm btn-outline-danger flex-grow-1">
+                                Eliminar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                index++;
+            }
+        </div>
+    }
+    else
+    {
+        <!-- Página vacía -->
+        <div class="row justify-content-center align-items-center" style="min-height: 400px;">
+            <div class="col-md-6 text-center">
+                <div class="mb-4">
+                    <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="48" stroke="#E50914" stroke-width="2" opacity="0.3"/>
+                        <text x="50" y="60" text-anchor="middle" font-size="40" fill="#E50914">🎬</text>
+                    </svg>
+                </div>
+                <h3 class="text-danger mb-3">No hay películas disponibles</h3>
+                <p class="text-secondary mb-4">
+                    @if (string.IsNullOrEmpty(ViewData["CurrentFilter"]?.ToString()))
+                    {
+                        <span>Comienza a agregar películas a tu catálogo de Desflix</span>
+                    }
+                    else
+                    {
+                        <span>No encontramos películas que coincidan con tu búsqueda. Intenta con otros términos.</span>
+                    }
+                </p>
+                <a asp-action="Create" class="btn btn-primary btn-lg">
+                    <i class="fas fa-plus"></i> Agregar Primera Película
+                </a>
+                @if (!string.IsNullOrEmpty(ViewData["CurrentFilter"]?.ToString()))
+                {
+                    <a asp-action="Index" class="btn btn-secondary btn-lg ms-2">
+                        Limpiar Búsqueda
+                    </a>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+<!-- Información adicional -->
+<div class="container-fluid mt-5 pt-5 border-top border-secondary">
+    <div class="row text-center">
+        <div class="col-md-4 mb-4">
+            <h4 class="text-danger">📽️ Catálogo Completo</h4>
+            <p class="text-secondary">Acceso a todas las películas disponibles en Desflix</p>
+        </div>
+        <div class="col-md-4 mb-4">
+            <h4 class="text-danger">🎯 Búsqueda Avanzada</h4>
+            <p class="text-secondary">Encuentra películas por título, director o género</p>
+        </div>
+        <div class="col-md-4 mb-4">
+            <h4 class="text-danger">✨ Interfaz Moderna</h4>
+            <p class="text-secondary">Diseño Netflix con animaciones suaves e intuitivo</p>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Animación de tarjetas al cargar
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.movie-card');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.classList.add('fade-in');
+                }, index * 50);
+            });
+
+            // Animación de búsqueda
+            const searchForm = document.querySelector('.search-box');
+            if (searchForm) {
+                searchForm.addEventListener('submit', function() {
+                    this.style.opacity = '0.7';
+                });
+            }
+        });
+    </script>
 }
-    </tbody>
-</table>

@@ -4,6 +4,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MVCPeliculas.Models
 {
+    /// <summary>
+    /// DEPRECATED: Use MVCPeliculas.Core.Entities.Pelicula instead.
+    /// This class is kept for backward compatibility only.
+    /// The DbContext now uses Core.Entities.Pelicula as the EF Core model.
+    /// </summary>
+    [Obsolete("Use MVCPeliculas.Core.Entities.Pelicula instead", false)]
     public class Pelicula
     {
         public int Id { get; set; }
