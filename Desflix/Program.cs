@@ -10,9 +10,16 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// Configurar DbContext
+// Configurar DbContext con retry
 builder.Services.AddDbContext<PeliculasDbContext>(item =>
-    item.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+    item.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        sqlOptions => sqlOptions.EnableRetryOnFailure(
+            maxRetryCount: 5,
+            maxRetryDelay: TimeSpan.FromSeconds(10),
+            errorNumbersToAdd: null
+        )
+    )
 );
 
 // Patrón: Dependency Injection
@@ -36,10 +43,28 @@ builder.Services.AddLogging(config =>
 
 var app = builder.Build();
 
+// Apply migrations and seed data
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    SeedData.Initialize(services);
+    var context = services.GetRequiredService<PeliculasDbContext>();
+    var logger = services.GetRequiredService<ILogger<Program>>();
+    
+    try
+    {
+        logger.LogInformation("Starting database migration...");
+        await context.Database.MigrateAsync();
+        logger.LogInformation("Database migration completed successfully.");
+        
+        logger.LogInformation("Starting database seeding...");
+        SeedData.Initialize(services);
+        logger.LogInformation("Database seeding completed successfully.");
+    }
+    catch (Exception ex)
+    {
+        logger.LogError(ex, "An error occurred while migrating or seeding the database.");
+        throw;
+    }
 }
 
 // Configure the HTTP request pipeline.

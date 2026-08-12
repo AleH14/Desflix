@@ -1,1 +1,8 @@
-{}
+{
+    "csharp-dev-tools.entityFramework.migrationPreferences": {
+        "Desflix.slnx": {
+            "migrationsProject": "c:\\Users\\Inspiron\\source\\repos\\MVCPeliculas\\Desflix\\Desflix.csproj",
+            "migrationsFolder": "Migrations"
+        }
+    }
+}
