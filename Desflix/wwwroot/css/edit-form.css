@@ -1,0 +1,320 @@
+/* Desflix - Edit Form Styles */
+
+.edit-container {
+    padding: 2rem 0;
+}
+
+.edit-header {
+    margin-bottom: 3rem;
+    border-bottom: 2px solid var(--accent-red);
+    padding-bottom: 1.5rem;
+}
+
+.edit-title {
+    font-size: 2.2rem;
+    font-weight: bold;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.edit-subtitle {
+    font-size: 1rem;
+    color: var(--text-secondary);
+}
+
+.edit-form-container {
+    background: linear-gradient(135deg, var(--secondary-black) 0%, var(--tertiary-dark) 100%);
+    border-radius: 12px;
+    padding: 2rem;
+    border-left: 4px solid var(--accent-red);
+    box-shadow: 0 8px 25px rgba(229, 9, 20, 0.2);
+}
+
+/* Validación */
+.alert {
+    background-color: rgba(220, 53, 69, 0.1);
+    border-color: var(--accent-red);
+    color: var(--text-primary);
+    border-radius: 6px;
+}
+
+.alert strong {
+    color: #dc3545;
+}
+
+/* Secciones del formulario */
+.form-section {
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.form-section:last-of-type {
+    border-bottom: none;
+    margin-bottom: 2rem;
+}
+
+.section-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--text-primary);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background-color: var(--border-color);
+}
+
+/* Estilos de formulario */
+.form-label {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.form-control,
+.form-select {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    border-radius: 6px;
+    font-size: 0.95rem;
+}
+
+.form-control::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.7;
+}
+
+.form-control:focus,
+.form-select:focus {
+    background-color: rgba(255, 255, 255, 0.08);
+    border-color: var(--accent-red);
+    color: var(--text-primary);
+    box-shadow: 0 0 0 0.2rem rgba(229, 9, 20, 0.25);
+}
+
+.form-control-lg {
+    min-height: 3rem;
+    font-size: 1.05rem;
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 120px;
+}
+
+/* Input group */
+.input-group-text {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    font-weight: bold;
+}
+
+.input-group .form-control {
+    border-left: none;
+}
+
+.input-group .form-control:focus {
+    border-color: var(--accent-red);
+}
+
+/* Validación */
+.text-danger {
+    color: #dc3545 !important;
+    font-size: 0.85rem;
+    font-weight: 500;
+    display: block;
+    margin-top: 0.3rem;
+}
+
+input:invalid {
+    border-color: #dc3545;
+}
+
+/* Vista previa de imagen */
+.image-preview {
+    margin-top: 1.5rem;
+}
+
+.preview-container {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+}
+
+.preview-image {
+    max-width: 100%;
+    max-height: 400px;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(229, 9, 20, 0.2);
+}
+
+/* Acciones */
+.actions-section {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+    flex-wrap: wrap;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.85rem 2rem;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all var(--transition-speed) ease;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.btn-edit {
+    background-color: var(--accent-red);
+    color: white;
+    flex: 1;
+    min-width: 200px;
+}
+
+.btn-edit:hover {
+    background-color: var(--accent-red-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4);
+    color: white;
+    text-decoration: none;
+}
+
+.btn-secondary {
+    background-color: var(--tertiary-dark);
+    color: var(--text-primary);
+    border: 2px solid var(--border-color);
+}
+
+.btn-secondary:hover {
+    background-color: var(--border-color);
+    border-color: var(--accent-red);
+    color: var(--accent-red);
+    transform: translateY(-2px);
+    text-decoration: none;
+}
+
+.btn-outline {
+    background-color: transparent;
+    color: var(--text-secondary);
+    border: 2px solid var(--border-color);
+}
+
+.btn-outline:hover {
+    background-color: transparent;
+    border-color: var(--text-secondary);
+    color: var(--text-primary);
+    transform: translateY(-2px);
+    text-decoration: none;
+}
+
+/* Small text */
+small {
+    font-size: 0.85rem;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .edit-form-container {
+        padding: 1.5rem;
+    }
+
+    .section-title {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .edit-container {
+        padding: 1rem 0;
+    }
+
+    .edit-title {
+        font-size: 1.8rem;
+    }
+
+    .edit-form-container {
+        padding: 1.5rem;
+        border-radius: 8px;
+    }
+
+    .form-section {
+        margin-bottom: 2rem;
+        padding-bottom: 1.5rem;
+    }
+
+    .actions-section {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .btn {
+        width: 100%;
+        padding: 0.75rem 1.5rem;
+        font-size: 0.9rem;
+    }
+
+    .btn-edit {
+        flex: none;
+        min-width: auto;
+    }
+}
+
+@media (max-width: 576px) {
+    .edit-title {
+        font-size: 1.5rem;
+    }
+
+    .edit-form-container {
+        padding: 1rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-control,
+    .form-select {
+        font-size: 0.9rem;
+    }
+
+    .form-control-lg {
+        min-height: 2.5rem;
+        font-size: 0.95rem;
+    }
+
+    .section-title {
+        font-size: 1rem;
+    }
+
+    .btn {
+        padding: 0.65rem 1.2rem;
+        font-size: 0.85rem;
+    }
+}

@@ -93,19 +93,9 @@
                             </p>
                         }
 
-                        <div class="movie-price">${pelicula.Precio.ToString("0.00")}</div>
+                        <div class="movie-price">$@pelicula.Precio.ToString("0.00")</div>
 
-                        <!-- Acciones -->
-                        <div class="mt-3 d-flex gap-2">
-                            <a asp-action="Edit" asp-route-id="@pelicula.Id" 
-                               class="btn btn-sm btn-secondary flex-grow-1">
-                                Editar
-                            </a>
-                            <a asp-action="Delete" asp-route-id="@pelicula.Id" 
-                               class="btn btn-sm btn-outline-danger flex-grow-1">
-                                Eliminar
-                            </a>
-                        </div>
+
                     </div>
                 </div>
                 index++;
