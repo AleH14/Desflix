@@ -1,0 +1,281 @@
+@using Desflix.DTOs.Response;
+@model PeliculaResponseDto
+
+@{
+    ViewData["Title"] = "Eliminar Película";
+}
+
+<div class="container-fluid delete-container">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="delete-header">
+                <h1 class="delete-title">🗑️ Eliminar Película</h1>
+                <p class="delete-subtitle">Esta acción no se puede deshacer</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="delete-warning">
+                <div class="warning-icon">⚠️</div>
+                <h2>¿Estás seguro?</h2>
+                <p>Estás a punto de eliminar permanentemente la película: <strong>@Model.Titulo</strong></p>
+                <p class="text-secondary">Esta película será eliminada de la base de datos y no podrá recuperarse.</p>
+            </div>
+
+            <div class="delete-content">
+                <!-- Información de la película -->
+                <div class="movie-info">
+                    <div class="row">
+                        <div class="col-md-4 text-center">
+                            @if (!string.IsNullOrEmpty(Model.UrlImagen))
+                            {
+                                <img src="@Model.UrlImagen" alt="@Model.Titulo" class="delete-image" />
+                            }
+                            else
+                            {
+                                <div class="delete-image-placeholder">📽️</div>
+                            }
+                        </div>
+                        <div class="col-md-8">
+                            <dl class="info-list">
+                                <dt>Título:</dt>
+                                <dd>@Model.Titulo</dd>
+
+                                <dt>Director:</dt>
+                                <dd>@Model.Director</dd>
+
+                                <dt>Año:</dt>
+                                <dd>@Model.FechaLanzamiento.Year</dd>
+
+                                <dt>Género:</dt>
+                                <dd>
+                                    @if (Model.Genero != null)
+                                    {
+                                        <span class="badge-genre">@Model.Genero.Nombre</span>
+                                    }
+                                    else
+                                    {
+                                        <span>No especificado</span>
+                                    }
+                                </dd>
+
+                                <dt>Precio:</dt>
+                                <dd class="price">$@Model.Precio.ToString("F2")</dd>
+
+                                @if (Model.Calificacion.HasValue)
+                                {
+                                    <dt>Calificación:</dt>
+                                    <dd>⭐ @Model.Calificacion.Value.ToString("F1")/10</dd>
+                                }
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botones de acción -->
+                <form asp-action="Delete" method="post" class="delete-actions">
+                    <button type="submit" class="btn btn-delete">
+                        🗑️ Sí, Eliminar Película
+                    </button>
+                    <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-secondary">
+                        ← Cancelar
+                    </a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .delete-container {
+        padding: 2rem 0;
+    }
+
+    .delete-header {
+        margin-bottom: 2rem;
+        border-bottom: 2px solid #dc3545;
+        padding-bottom: 1.5rem;
+    }
+
+    .delete-title {
+        font-size: 2.2rem;
+        font-weight: bold;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+    }
+
+    .delete-subtitle {
+        font-size: 1rem;
+        color: #dc3545;
+        font-weight: 600;
+    }
+
+    .delete-warning {
+        background: linear-gradient(135deg, rgba(220, 53, 69, 0.1), rgba(220, 53, 69, 0.05));
+        border: 2px solid #dc3545;
+        border-radius: 12px;
+        padding: 2rem;
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .warning-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+    }
+
+    .delete-warning h2 {
+        color: #dc3545;
+        font-weight: bold;
+        margin-bottom: 1rem;
+    }
+
+    .delete-warning p {
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+    }
+
+    .delete-content {
+        background: linear-gradient(135deg, var(--secondary-black) 0%, var(--tertiary-dark) 100%);
+        border-radius: 12px;
+        padding: 2rem;
+        border-left: 4px solid var(--accent-red);
+    }
+
+    .movie-info {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 8px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .delete-image {
+        width: 100%;
+        max-width: 250px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+    }
+
+    .delete-image-placeholder {
+        width: 100%;
+        max-width: 250px;
+        height: 350px;
+        background: linear-gradient(135deg, var(--secondary-black) 0%, var(--tertiary-dark) 100%);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 4rem;
+    }
+
+    .info-list {
+        display: grid;
+        gap: 1rem;
+        text-align: left;
+    }
+
+    .info-list dt {
+        font-weight: 600;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        font-size: 0.9rem;
+        letter-spacing: 0.5px;
+    }
+
+    .info-list dd {
+        color: var(--text-primary);
+        font-size: 1.05rem;
+        margin-bottom: 0;
+    }
+
+    .info-list dd.price {
+        color: var(--accent-red);
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+
+    .badge-genre {
+        display: inline-block;
+        background-color: var(--accent-red);
+        color: white;
+        padding: 0.4rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+
+    .delete-actions {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.85rem 2rem;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 0.95rem;
+        transition: all var(--transition-speed) ease;
+        text-decoration: none;
+    }
+
+    .btn-delete {
+        background-color: #dc3545;
+        color: white;
+        flex: 1;
+        min-width: 200px;
+    }
+
+    .btn-delete:hover {
+        background-color: #c82333;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(220, 53, 69, 0.4);
+        color: white;
+        text-decoration: none;
+    }
+
+    .btn-secondary {
+        background-color: var(--tertiary-dark);
+        color: var(--text-primary);
+        border: 2px solid var(--border-color);
+    }
+
+    .btn-secondary:hover {
+        background-color: var(--border-color);
+        border-color: var(--accent-red);
+        color: var(--accent-red);
+        transform: translateY(-2px);
+        text-decoration: none;
+    }
+
+    @@media (max-width: 768px) {
+        .delete-title {
+            font-size: 1.8rem;
+        }
+
+        .movie-info {
+            padding: 1.5rem;
+        }
+
+        .delete-actions {
+            flex-direction: column;
+        }
+
+        .btn {
+            width: 100%;
+        }
+
+        .btn-delete {
+            flex: none;
+            min-width: auto;
+        }
+    }
+</style>

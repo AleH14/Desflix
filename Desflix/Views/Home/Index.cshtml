@@ -1,0 +1,181 @@
+@using Desflix.DTOs.Response;
+@model List<PeliculaResponseDto>
+
+@{
+    ViewData["Title"] = "Inicio - Desflix";
+}
+
+<!-- Hero Section con Carrusel -->
+<section class="hero-carousel-section">
+    <div class="carousel-wrapper">
+        @if (Model != null && Model.Any())
+        {
+            <div class="carousel-container">
+                @foreach (var (pelicula, index) in Model.Select((p, i) => (p, i)))
+                {
+                    <div class="carousel-slide @(index == 0 ? "active" : "")" data-index="@index">
+                        <!-- Fondo de imagen -->
+                        <div class="carousel-background">
+                            @if (!string.IsNullOrEmpty(pelicula.UrlImagen))
+                            {
+                                <img src="@pelicula.UrlImagen" alt="@pelicula.Titulo" class="carousel-bg-image" />
+                            }
+                            else
+                            {
+                                <div class="carousel-bg-placeholder"></div>
+                            }
+                            <!-- Overlay oscuro -->
+                            <div class="carousel-overlay"></div>
+                        </div>
+
+                        <!-- Contenido del slide -->
+                        <div class="carousel-content">
+                            <div class="container-fluid h-100">
+                                <div class="row h-100 align-items-center">
+                                    <div class="col-lg-6 col-md-8 col-12">
+                                        <div class="slide-text-content">
+                                            <!-- Ícono de película -->
+                                            <span class="movie-icon">🎬</span>
+
+                                            <!-- Título principal -->
+                                            <h1 class="carousel-title">@pelicula.Titulo</h1>
+
+                                            <!-- Información de la película -->
+                                            <div class="movie-info">
+                                                <div class="info-item">
+                                                    <span class="info-label">Director:</span>
+                                                    <span class="info-value">@pelicula.Director</span>
+                                                </div>
+                                                <div class="info-item">
+                                                    <span class="info-label">Año:</span>
+                                                    <span class="info-value">@pelicula.FechaLanzamiento.Year</span>
+                                                </div>
+                                                @if (pelicula.Calificacion.HasValue)
+                                                {
+                                                    <div class="info-item">
+                                                        <span class="info-label">Calificación:</span>
+                                                        <span class="info-value stars">
+                                                            ⭐ @pelicula.Calificacion.Value.ToString("F1")/10
+                                                        </span>
+                                                    </div>
+                                                }
+                                            </div>
+
+                                            <!-- Sinopsis -->
+                                            @if (!string.IsNullOrEmpty(pelicula.Sinopsis))
+                                            {
+                                                <p class="carousel-synopsis">@pelicula.Sinopsis.Length > 150 ? pelicula.Sinopsis.Substring(0, 150) + "..." : pelicula.Sinopsis</p>
+                                            }
+
+                                            <!-- Acciones -->
+                                            <div class="carousel-actions">
+                                                <a href="@Url.Action("Details", "Pelicula", new { id = pelicula.Id })" 
+                                                   class="btn btn-play">
+                                                    ▶ Ver Detalles
+                                                </a>
+                                                <a href="@Url.Action("Index", "Pelicula")" 
+                                                   class="btn btn-secondary">
+                                                    Explorar Catálogo
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Imagen de la película (lado derecho) -->
+                                    <div class="col-lg-6 col-md-12 carousel-image-section">
+                                        <div class="carousel-featured-image">
+                                            @if (!string.IsNullOrEmpty(pelicula.UrlImagen))
+                                            {
+                                                <img src="@pelicula.UrlImagen" alt="@pelicula.Titulo" class="featured-poster" />
+                                            }
+                                            else
+                                            {
+                                                <div class="featured-poster-placeholder">
+                                                    <span>📽️</span>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Controles del carrusel -->
+            <div class="carousel-controls">
+                <button class="carousel-btn carousel-btn-prev" id="prevSlide" aria-label="Película anterior">
+                    <span>❮</span>
+                </button>
+                <div class="carousel-indicators">
+                    @for (int i = 0; i < Model.Count; i++)
+                    {
+                        <button class="indicator @(i == 0 ? "active" : "")" data-index="@i" 
+                                aria-label="Ir a película @(i + 1)">
+                        </button>
+                    }
+                </div>
+                <button class="carousel-btn carousel-btn-next" id="nextSlide" aria-label="Película siguiente">
+                    <span>❯</span>
+                </button>
+            </div>
+        }
+        else
+        {
+            <!-- Estado vacío -->
+            <div class="empty-state">
+                <div class="empty-state-content">
+                    <h2>Bienvenido a Desflix</h2>
+                    <p>Aún no hay películas disponibles</p>
+                    <a href="@Url.Action("Create", "Pelicula")" class="btn btn-play">
+                        Agregar película
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+
+<!-- Sección de películas destacadas (grid) -->
+@if (Model != null && Model.Any())
+{
+    <section class="movies-container">
+        <div class="container-fluid">
+            <h2 class="section-title">Películas Destacadas</h2>
+            <div class="movies-grid">
+                @foreach (var pelicula in Model)
+                {
+                    <div class="movie-card">
+                        <div class="movie-image-wrapper">
+                            @if (!string.IsNullOrEmpty(pelicula.UrlImagen))
+                            {
+                                <img src="@pelicula.UrlImagen" alt="@pelicula.Titulo" class="movie-image" />
+                            }
+                            else
+                            {
+                                <div class="movie-image-placeholder">📽️</div>
+                            }
+                        </div>
+                        <div class="movie-content">
+                            <h3 class="movie-title">@pelicula.Titulo</h3>
+                            <p class="movie-director">@pelicula.Director</p>
+                            @if (pelicula.Calificacion.HasValue)
+                            {
+                                <div class="movie-rating">
+                                    <span class="stars">⭐ @pelicula.Calificacion.Value.ToString("F1")</span>
+                                </div>
+                            }
+                            <div class="movie-footer">
+                                <a href="@Url.Action("Details", "Pelicula", new { id = pelicula.Id })" 
+                                   class="btn btn-sm btn-outline-primary">
+                                    Ver más
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+}

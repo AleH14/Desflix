@@ -1,0 +1,141 @@
+@using Desflix.DTOs.Response;
+@model PeliculaResponseDto
+
+@{
+    ViewData["Title"] = "Detalles de Película";
+}
+
+<div class="container-fluid details-container">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="details-header">
+                <h1 class="details-title">@Model.Titulo</h1>
+                <p class="details-subtitle">Director: <span class="text-danger">@Model.Director</span></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Imagen de la película -->
+        <div class="col-lg-4 col-md-5 mb-4">
+            <div class="details-image-container">
+                @if (!string.IsNullOrEmpty(Model.UrlImagen))
+                {
+                    <img src="@Model.UrlImagen" alt="@Model.Titulo" class="details-image" />
+                }
+                else
+                {
+                    <div class="details-image-placeholder">
+                        <span>📽️</span>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Información de la película -->
+        <div class="col-lg-8 col-md-7">
+            <div class="details-info">
+                <!-- Información básica -->
+                <div class="info-section">
+                    <h3 class="section-header">Información de la Película</h3>
+
+                    <div class="info-grid">
+                        <div class="info-box">
+                            <span class="info-label">Año de Lanzamiento</span>
+                            <span class="info-value">@Model.FechaLanzamiento.Year</span>
+                        </div>
+
+                        <div class="info-box">
+                            <span class="info-label">Género</span>
+                            <span class="info-value">
+                                @if (Model.Genero != null)
+                                {
+                                    <span class="badge-genre">@Model.Genero.Nombre</span>
+                                }
+                                else
+                                {
+                                    <span>No especificado</span>
+                                }
+                            </span>
+                        </div>
+
+                        <div class="info-box">
+                            <span class="info-label">Precio</span>
+                            <span class="info-value price">$@Model.Precio.ToString("F2")</span>
+                        </div>
+
+                        @if (Model.Calificacion.HasValue)
+                        {
+                            <div class="info-box">
+                                <span class="info-label">Calificación</span>
+                                <span class="info-value rating">
+                                    ⭐ @Model.Calificacion.Value.ToString("F1")/10
+                                </span>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <!-- Sinopsis -->
+                @if (!string.IsNullOrEmpty(Model.Sinopsis))
+                {
+                    <div class="info-section">
+                        <h3 class="section-header">Sinopsis</h3>
+                        <p class="synopsis-text">@Model.Sinopsis</p>
+                    </div>
+                }
+
+                <!-- Metadatos -->
+                <div class="info-section metadata-section">
+                    <h3 class="section-header">Información Adicional</h3>
+                    <div class="metadata-grid">
+                        <div class="metadata-item">
+                            <span class="metadata-label">Fecha de Lanzamiento</span>
+                            <span class="metadata-value">@Model.FechaLanzamiento.ToString("dd/MM/yyyy")</span>
+                        </div>
+
+                        <div class="metadata-item">
+                            <span class="metadata-label">Estado</span>
+                            <span class="metadata-value">
+                                @if (Model.Activo)
+                                {
+                                    <span class="badge badge-success">Activa</span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-secondary">Inactiva</span>
+                                }
+                            </span>
+                        </div>
+
+                        <div class="metadata-item">
+                            <span class="metadata-label">Creada</span>
+                            <span class="metadata-value">@Model.FechaCreacion.ToString("dd/MM/yyyy HH:mm")</span>
+                        </div>
+
+                        @if (Model.FechaModificacion.HasValue)
+                        {
+                            <div class="metadata-item">
+                                <span class="metadata-label">Última Modificación</span>
+                                <span class="metadata-value">@Model.FechaModificacion.Value.ToString("dd/MM/yyyy HH:mm")</span>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <!-- Acciones -->
+                <div class="actions-section">
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-edit">
+                        ✏️ Editar
+                    </a>
+                    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-delete">
+                        🗑️ Eliminar
+                    </a>
+                    <a asp-action="Index" class="btn btn-secondary">
+                        ← Volver al Catálogo
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
